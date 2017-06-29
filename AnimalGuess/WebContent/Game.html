@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Guess Animal Game</title>
+</head>
+<body>
+<style>
+h1 {
+    color: blue;
+    font-family: verdana;
+    font-size: 300%;
+}
+p  {
+    color: red;
+    font-family: courier;
+    font-size: 160%;
+}
+body {
+    background-color: #93B874;
+}
+</style>
+
+    <h1> Welcome to Guess Animal Game</h1>
+    <h2>Think any of the following animals in the list</h2>
+    <p> pigeon <br> dog <br> cat <br> lion <br> fly <br> crow <br> duck <br> tiger <br> eagle <br> owl<p>
+    <script>  
+    
+    (function() {
+            
+            var question = ["Can your animal fly?", "Does it purr?", "Does your animal roar?", "Does it have more than 1 color?", "Does your animal caw?", "Does your animal quack?", "Does your animal have stripes?", "Does your animal eat meat?", "Can your animal make milk for Human consumption?"];
+            var animal = ["pigeon", "dog", "cat", "lion", "fly", "crow", "duck", "tiger", "eagle", "owl"];
+            var yes_next = [3, -3, 6, -5, -6, -7, -8, 8, -10]
+            var no_next = [1, 2, -2, 4, 5, 7, -4, -1, -9]
+            var maybe;
+            var current;
+            var guessing = true;
+            var yes;
+            var playing = true;
+            while (playing) {
+              guessing = true;
+              current = 0;
+              while (guessing) {
+                yes = confirm(question[current]);
+                if (yes) {
+                  if (yes_next[current] < 0) {
+                    maybe = Math.abs(yes_next[current]) - 1;
+                    correct = confirm("Is it a " + animal[maybe] + "?");
+                    guessing = false;
+                  } else {
+                    current = yes_next[current];
+                  }
+                } else {
+                  if (no_next[current] < 0) {
+                    maybe = Math.abs(no_next[current]) - 1;
+                    correct = confirm("Is it a " + animal[maybe] + "?");
+                    guessing = false;
+                  } else {
+                    current = no_next[current];
+                  }
+                }
+              }
+              if (correct) {
+                current = 0;
+                playing = confirm("Wow! I win! Would you like to Play Again?");
+              } else {
+                animal[animal.length] = prompt("I give up. What is your animal?");
+                question[question.length] =
+                  prompt("What question should I ask to tell a " + animal[maybe] + " from a " + animal[animal.length - 1] + "?");
+                if (yes) {
+                  tmp = yes_next[current];
+                  yes_next[current] = question.length - 1;
+                  yes_next[yes_next[current]] = animal.length * -1;
+                  no_next[yes_next[current]] = tmp;
+                } else {
+                  tmp = no_next[current];
+                  no_next[current] = question.length - 1;
+                  yes_next[no_next[current]] = animal.length * -1;
+                  no_next[no_next[current]] = tmp;
+                }
+                current = 0;
+                playing = confirm("Would you like to Play Again?");
+              }
+            }
+          })();
+    
+    
+    </script>
+
+</body>
+</html>
